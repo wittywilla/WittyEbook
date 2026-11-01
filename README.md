@@ -18,8 +18,7 @@
   <a href="wiki/Home.md"><b>Full guide</b></a>
 </p>
 
-> Read-only mirror of `web/src/modules/wittyebook` in [WittyMediaServer](https://github.com/wittywilla/WittyMediaServer),
-> where development happens. Please open issues and pull requests there.
+> WittyEbook is developed and released here. Issues and pull requests are welcome.
 
 Runs inside [WittyMediaServer](https://github.com/wittywilla/WittyMediaServer) and the
 [WittyReader](https://github.com/wittywilla/WittyReader) app.
