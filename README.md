@@ -1,90 +1,61 @@
-<h1 align="center">WittyEbook</h1>
+# WittyEbook
 
-<p align="center">
-  <b>An ebook reader built for long and careful reading.</b><br>
-  EPUB 2 and 3, a book-like page set to your taste, the study tools serious readers need, and a pen with pressure.
-</p>
+An ebook reader for EPUB 2 and 3, made for long and careful reading. You need it to read EPUB books in WittyMediaServer.
 
-<p align="center">
-  <a href="LICENSE"><img alt="Licence: Apache-2.0" src="https://img.shields.io/badge/licence-Apache--2.0-blue.svg"></a>
-  <img alt="React 18+" src="https://img.shields.io/badge/React-18%2B-61dafb.svg">
-  <img alt="EPUB 2 and 3" src="https://img.shields.io/badge/EPUB-2%20·%203-8b6cff.svg">
-</p>
+## What it does
 
-<p align="center">
-  <a href="#install">Install</a> ·
-  <a href="#use">Use</a> ·
-  <a href="wiki/Keyboard-shortcuts.md">Keyboard shortcuts</a> ·
-  <a href="wiki/Home.md"><b>Full guide</b></a>
-</p>
+- **Book view:** two pages side by side, one page or scrolling. *Auto* picks for the screen.
+- **Exact resume:** the place is a spot in the text, so a book reopens on the same words at any size, on any device.
+- **Time left** in the chapter and the book, from your own reading speed.
+- **Your typography:** font, 60 to 250 percent size, line spacing, margins, and justification with hyphenation.
+- **Comfortable at night:** light, sepia, dark and black pages, brightness, and a warm night light.
+- **Footnotes in a pop-up,** so you can read a note without leaving the page.
+- **Study tools from WittyInk:** highlights and notes tied to the words, search, a pen with pressure, and reading aloud.
+- **Safe with any book:** chapters show in a sandbox where no script can run, and links never navigate the page away.
 
-> WittyEbook is developed and released here. Issues and pull requests are welcome.
+The Reader page, and how the server takes a book apart, stay with the server. No books come with it.
 
-Runs inside [WittyMediaServer](https://github.com/wittywilla/WittyMediaServer) and the
-[WittyReader](https://github.com/wittywilla/WittyReader) app.
+How to use it is in **Help** inside WittyMediaServer: see the books guide.
 
-## Highlights
+## How to get it
 
-| | Reading | |
-|---|---|---|
-| 📖 | **Book view** | two pages side by side with a soft fold, one page, or scrolling; *Auto* picks for the screen |
-| 🎯 | **Exact resume** | the place is a spot in the text, so the book reopens on the same words at any size, on any device |
-| ⏱️ | **Time left** | in the chapter and the book, from your own reading speed |
-| 🔤 | **Your typography** | five font choices, 60–250 % size, line spacing, margins, justification with hyphenation |
-| 🌙 | **Comfortable at night** | light, sepia, dark and black pages, brightness, and a warm night light |
-| 🦶 | **Footnotes in a pop-up** | read a note without leaving the page |
+An admin adds it from the module store inside WittyMediaServer: **Settings → Modules**, then **Browse the store**, then **Add** beside WittyEbook. That needs WittyMediaServer 0.6.0-alpha or later, and it works with nothing older. The range this version fits is in `module.json`: 0.6.0-alpha through 0.6.x.
 
-| | Study tools (from [WittyInk](https://github.com/wittywilla/WittyInk)) | |
-|---|---|---|
-| 🖍️ | **Highlights and notes** | tied to the words, so they survive layout changes; colour meanings; Markdown export |
-| 🔎 | **Search the book** | snippets with the match marked; the passage flashes when you jump to it |
-| ✍️ | **Pen with pressure** | pen, pencil, highlighter, eraser; strokes stay with their words; a highlighter line over text becomes a highlight |
-| 🔊 | **Read aloud** | paragraph by paragraph, turning pages and chapters |
+Adding it brings WittyInk, which it's built on.
 
-**Safe with any book:** chapters show in a sandbox where no script can run, under a strict content
-policy, and links never navigate the page away.
+## What it needs
 
-## Install
+[WittyInk](https://github.com/wittywilla/WittyInk), and React 18 or newer, which the app provides.
+
+## Platforms
+
+It's one browser bundle for every system the server runs on, and it runs on whichever device opens the server. It has been seen working in a desktop browser, against a test server on Linux. It also runs in the WittyReader app. Safari, real phones and real TVs have not been tried.
+
+## Building and testing
+
+You need Node.js 22, as CI uses, and Go for the manifest check. In a worktree, first run the copy of `dev-modules.mjs` kept above the repositories (`node D:/projects/dev-modules.mjs` on the development machine). It writes only links that git ignores, so the checkout builds against the repositories beside it.
 
 ```bash
-npm install github:wittywilla/WittyEbook
+npm install
 ```
 
-TypeScript and React source, for a bundler such as Vite with `@vitejs/plugin-react`. Needs React 18
-or newer. [WittyInk](https://github.com/wittywilla/WittyInk) is installed with it.
-
-## Use
-
-```tsx
-import { HostContext } from '@wittywilla/wittyink'
-import WittyEbook from '@wittywilla/wittyebook'
-
-<HostContext.Provider value={host}><WittyEbook /></HostContext.Provider>
+```bash
+npm run build:bundle
 ```
 
-The host's `epub` field supplies the book: its chapters, contents and word counts, where each chapter
-is loaded from, and search. See [Embedding](wiki/Embedding.md).
+That makes one script and one stylesheet, as a server installs them. To check the manifest:
 
-| Guide | |
-|---|---|
-| [Reading and layout](wiki/Reading-and-layout.md) | layouts, turning pages, progress, time left |
-| [Text and display](wiki/Text-and-display.md) | fonts, sizes, page colours, brightness |
-| [Study tools](wiki/Study-tools.md) | highlights, notes, search, definitions, handwriting |
-| [Keyboard shortcuts](wiki/Keyboard-shortcuts.md) | every key |
+```bash
+go run github.com/wittywilla/wittymodule/cmd/wittymodule check .
+```
 
-## The Witty family
+It has no tests of its own yet. CI checks the manifest and builds the bundle.
 
-| Project | Role |
-|---|---|
-| [WittyInk](https://github.com/wittywilla/WittyInk) | what the readers share |
-| **WittyEbook** · [WittyPDF](https://github.com/wittywilla/WittyPDF) · [WittyComics](https://github.com/wittywilla/WittyComics) | the book, PDF and comic readers |
-| [WittyReader](https://github.com/wittywilla/WittyReader) · [WittyMediaServer](https://github.com/wittywilla/WittyMediaServer) | the apps they run in |
+To use it in another app, give it a `ReaderHost` whose `epub` field supplies the book: see [Embedding](wiki/Embedding.md). The other guides in [wiki/](wiki/Home.md) cover [reading and layout](wiki/Reading-and-layout.md), [text and display](wiki/Text-and-display.md), [study tools](wiki/Study-tools.md) and [every key](wiki/Keyboard-shortcuts.md).
 
 ## Licence
 
-**Apache-2.0**, the same licence as WittyMediaServer. © 2026 WittyWilla and contributors.
-Use, change and share it; if you redistribute it or build on it, keep the [NOTICE](NOTICE)
-attribution, *“WittyEbook, developed by WittyWilla”*, in your NOTICE file, documentation or About screen.
+Apache-2.0: see [LICENSE](LICENSE) and [NOTICE](NOTICE). If you redistribute it or build on it, keep the NOTICE attribution.
 
 ## Legal
 
