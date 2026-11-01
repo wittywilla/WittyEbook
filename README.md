@@ -15,7 +15,7 @@ An ebook reader for EPUB 2 and 3, made for long and careful reading. You need it
 
 The Reader page, and how the server takes a book apart, stay with the server. No books come with it.
 
-How to use it is in **Help** inside WittyMediaServer: see the books guide.
+How to use it is in **Help** inside WittyMediaServer: see Books, PDFs and comics.
 
 ## How to get it
 
