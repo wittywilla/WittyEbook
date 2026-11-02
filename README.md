@@ -2,6 +2,18 @@
 
 An ebook reader for EPUB 2 and 3, made for long and careful reading. You need it to read EPUB books in WittyMediaServer.
 
+<!-- pictures -->
+
+![A book open in the reader](docs/images/reader-epub.webp)
+
+<sub>Text and cover from [Standard Ebooks](https://standardebooks.org/), [CC0](https://creativecommons.org/publicdomain/zero/1.0/).</sub>
+
+![A shelf of books](docs/images/books.webp)
+
+<sub>A shelf of books in WittyMediaServer, from [Standard Ebooks](https://standardebooks.org/), [CC0](https://creativecommons.org/publicdomain/zero/1.0/).</sub>
+
+<!-- /pictures -->
+
 ## What it does
 
 - **Book view:** two pages side by side, one page or scrolling. *Auto* picks for the screen.
