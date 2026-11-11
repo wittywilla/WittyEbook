@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+/* Copyright (C) 2026 WittyWilla and contributors */
 /* WittyEbook: the page area, book-view spine and the brightness and warmth layers. */
 .epub2 { transition: background .3s; }
 .epub-page { position: absolute; top: 18px; bottom: 26px; }
