@@ -1,7 +1,7 @@
 {
   "id": "wittyebook",
   "name": "WittyEbook",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "repo": "wittywilla/WittyEbook",
   "license": "AGPL-3.0-or-later",
   "delivery": "web",
@@ -9,7 +9,7 @@
   "style": "style.css",
   "api": 3,
   "minServer": "0.6.0-alpha",
-  "maxServer": "0.6.x",
+  "maxServer": "0.8.x",
   "group": "read",
   "summary": "Reflowable books (EPUB) with book view, typography and study tools.",
   "updates": "The EPUB reader itself: book view, typography, study tools, handwriting and its look.",

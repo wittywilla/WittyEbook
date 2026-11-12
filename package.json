@@ -1,6 +1,6 @@
 {
   "name": "@wittywilla/wittyebook",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A reader for reflowable ebooks (EPUB): book view, typography, highlights, notes, handwriting with pen pressure, search and read aloud.",
   "license": "AGPL-3.0-or-later",
   "author": "WittyWilla (https://github.com/wittywilla)",

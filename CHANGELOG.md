@@ -5,5 +5,7 @@ What changed in WittyEbook, newest first. What changed before it had a repositor
 
 ## Unreleased
 
+- **WittyEbook 0.3.0:** Fits WittyMediaServer 0.8.x.
+
 - Module API 3 and WittyMediaServer 0.6.0-alpha: this is how a server gets it now, with no copy compiled in.
 - WittyEbook is now a project of its own, developed and released from this repository.
