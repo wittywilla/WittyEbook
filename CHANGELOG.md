@@ -5,6 +5,7 @@ What changed in WittyEbook, newest first. What changed before it had a repositor
 
 ## Unreleased
 
+- **Settings in every app's Settings, under Modules** (`sdui.json`, each profile's own): layout, page colour, font, text size, line spacing, margins, justifying, brightness, warmth and the read-aloud speed. A book opens with them on every device, and changes made while reading are saved to them. The reading surface itself stays in the reader.
 - A chapter that can't be loaded and a search that fails are now reported to the host's log (`host.report`), once each rather than on every retry.
 - **Module API 4**, for WittyMediaServer 0.8.0-alpha and later: the module carries its own server-driven UI in `sdui.json`, which `wittymodule pack` puts in every archive.
 - Carries `sdui.json` with its theme scope, so an administrator can give the EPUB reader colours of its own. Its pages come with WittyInk, which every reader shares.

@@ -17,7 +17,7 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { centerline, cite, colorName, Define, exportNotes, Field, fill, HighlightEditor, hits, IconBack, IconBookmark, IconClose, IconContents, IconHandwriting, IconNext, IconNotes, IconPrev, IconSearch, IconSettings, IconSpeaker, IconStop, InkBar, InkDefs, InkStroke, loadInk, NotesPanel, outline, pointPressure, Range, saveInk, SelectionBar, Sheet, useAnnotations, useColorLabels, useHost, type Ann, type DrawTool, type InkPrefs, type Stroke } from '@wittywilla/wittyink'
+import { centerline, cite, colorName, Define, exportNotes, Field, fill, HighlightEditor, hits, IconBack, IconBookmark, IconClose, IconContents, IconHandwriting, IconNext, IconNotes, IconPrev, IconSearch, IconSettings, IconSpeaker, IconStop, InkBar, InkDefs, InkStroke, loadInk, NotesPanel, outline, pointPressure, Range, saveInk, SelectionBar, settingBool, settingEnum, settingInt, laterSaver, Sheet, useAnnotations, useColorLabels, useHost, type Ann, type ReaderHost, type DrawTool, type InkPrefs, type Stroke } from '@wittywilla/wittyink'
 import './ebook.css'
 
 // WittyEbook: the EPUB reader. Book view (two pages side by side), one page or
@@ -50,8 +50,28 @@ const FAMILIES: Record<Prefs['family'], string> = {
   readable: "Verdana, Tahoma, 'Trebuchet MS', sans-serif", mono: "ui-monospace, Consolas, 'Courier New', monospace",
 }
 
-function loadPrefs(): Prefs {
-  try { return { ...DEF, ...JSON.parse(localStorage.getItem(PREFS_KEY) || '{}') } } catch { return DEF }
+// The profile's settings for the reader (sdui.json), when the host keeps them, over what this
+// device remembers: text size and line spacing as percentages, brightness and warmth too.
+const LAYOUTS = ['auto', 'single', 'book', 'scroll'] as const
+const PAGE_COLOURS = ['light', 'sepia', 'dark', 'black'] as const
+const FONTS = ['publisher', 'serif', 'sans', 'readable', 'mono'] as const
+function fromSettings(v: Record<string, unknown> | undefined, p: Prefs): Prefs {
+  if (!v) return p
+  return {
+    layout: settingEnum(v.layout, LAYOUTS, p.layout), theme: settingEnum(v.pageColour, PAGE_COLOURS, p.theme), family: settingEnum(v.font, FONTS, p.family),
+    font: settingInt(v.textSize, 60, 250, p.font), line: settingInt(v.lineSpacing, 110, 220, Math.round(p.line * 100)) / 100,
+    margin: settingInt(v.margins, 0, 6, p.margin), justify: settingBool(v.justify, p.justify),
+    brightness: settingInt(v.brightness, 35, 100, Math.round(p.brightness * 100)) / 100, warmth: (settingInt(v.warmth, 0, 100, Math.round((p.warmth / 0.45) * 100)) / 100) * 0.45,
+  }
+}
+const toSettings = (p: Prefs) => ({
+  layout: p.layout, pageColour: p.theme, font: p.family, textSize: Math.round(p.font), lineSpacing: Math.round(p.line * 100), margins: p.margin, justify: p.justify,
+  brightness: Math.round(p.brightness * 100), warmth: Math.round((p.warmth / 0.45) * 100),
+})
+function loadPrefs(host?: ReaderHost): Prefs {
+  let p = DEF
+  try { p = { ...DEF, ...JSON.parse(localStorage.getItem(PREFS_KEY) || '{}') } } catch { /* the defaults */ }
+  return fromSettings(host?.settings?.get('wittyebook'), p)
 }
 const fmtMin = (m: number) => (m < 1 ? 'less than a minute' : m < 60 ? `${Math.round(m)} min` : `${Math.floor(m / 60)} h ${Math.round(m % 60)} min`)
 // A link target inside the book, relative to the chapter it is in.
@@ -146,7 +166,8 @@ export default function EpubReader() {
   const spine = info.spine
   const words = info.words.length === spine.length ? info.words : spine.map(() => 0)
   const totalWords = words.reduce((a, b) => a + b, 0) || 1
-  const [p, setP] = useState(loadPrefs)
+  const [p, setP] = useState(() => loadPrefs(host))
+  const savePrefs = useMemo(() => laterSaver(host.settings ? (v) => host.settings!.save('wittyebook', v) : undefined), [host])
   const start = host.start
   const [chapter, setChapter] = useState(Math.min(Math.floor(start), Math.max(0, spine.length - 1)))
   const [page, setPage] = useState(0)
@@ -164,7 +185,7 @@ export default function EpubReader() {
   const [hitsFound, setHits] = useState<{ chapter: number; snippet: string; quote: string; prefix: string }[] | null>(null)
   const [bar, setBar] = useState(true)
   const [speaking, setSpeaking] = useState(false)
-  const [ink, setInkState] = useState(loadInk)
+  const [ink, setInkState] = useState(() => loadInk(host))
   const [inkMode, setInkMode] = useState(false)
   const [tick, setTick] = useState(0) // the layout moved: place ink again
   const frame = useRef<HTMLIFrameElement | null>(null)
@@ -175,8 +196,8 @@ export default function EpubReader() {
   const barTimer = useRef<any>(null)
   const savePos = useRef(-1)
 
-  const setPrefs = (v: Partial<Prefs>) => setP((cur) => { const n = { ...cur, ...v }; try { localStorage.setItem(PREFS_KEY, JSON.stringify(n)) } catch { /* ignore */ } return n })
-  const setInk = (v: Partial<InkPrefs>) => setInkState((cur) => { const n = { ...cur, ...v }; saveInk(n); return n })
+  const setPrefs = (v: Partial<Prefs>) => setP((cur) => { const n = { ...cur, ...v }; try { localStorage.setItem(PREFS_KEY, JSON.stringify(n)) } catch { /* ignore */ } savePrefs(toSettings(n)); return n })
+  const setInk = (v: Partial<InkPrefs>) => setInkState((cur) => { const n = { ...cur, ...v }; saveInk(n, host); return n })
   // Two pages need room: "Auto" shows them on wide landscape screens, and
   // even "Two pages" shows one on a phone.
   const wide = typeof window !== 'undefined' && window.innerWidth >= 1000 && window.innerWidth > window.innerHeight
@@ -657,6 +678,7 @@ export default function EpubReader() {
         if (paged) H.current.show?.(b)
         const u = new SpeechSynthesisUtterance(b.textContent || '')
         u.lang = d.documentElement.lang || 'en'
+        u.rate = Number(settingEnum(host.settings?.get('wittyebook')?.readAloudSpeed, ['0.75', '1', '1.25', '1.5', '2'] as const, '1'))
         u.onend = next
         u.onerror = () => setSpeaking(false)
         synth.speak(u)
