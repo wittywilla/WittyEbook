@@ -1,0 +1,7 @@
+{
+  "format": "wittymodule-sdui",
+  "formatVersion": 1,
+  "module": "wittyebook",
+  "catalog": 2,
+  "theme": { "scope": "wittyebook", "label": "EPUB reader" }
+}
