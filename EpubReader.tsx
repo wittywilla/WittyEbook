@@ -37,6 +37,9 @@ type Prefs = {
   layout: 'auto' | 'single' | 'book' | 'scroll'; font: number; family: 'publisher' | 'serif' | 'sans' | 'readable' | 'mono'
   line: number; margin: number; justify: boolean; theme: 'light' | 'sepia' | 'dark' | 'black'; brightness: number; warmth: number
 }
+// An error's message for host.report: addresses lose their query strings
+// (they can carry a token), and it is kept short.
+const errText = (e: unknown) => String((e as Error)?.message || e || '').replace(/([a-z][a-z0-9+.-]*:\/\/[^\s?#"']*|\/[^\s?#"']*)[?#][^\s"']*/gi, '$1').slice(0, 500)
 const DEF: Prefs = { layout: 'auto', font: 100, family: 'publisher', line: 1.55, margin: 2, justify: true, theme: 'light', brightness: 1, warmth: 0 }
 const PREFS_KEY = 'wms.ereader'
 const THEMES: Record<Prefs['theme'], [string, string, string]> = {
@@ -135,6 +138,9 @@ const unwrap = (m: Element) => m.replaceWith(...Array.from(m.childNodes))
 
 export default function EpubReader() {
   const host = useHost()
+  // What has been reported to the host's log already: once each, not per retry.
+  const reported = useRef(new Set<number>())
+  const searchReported = useRef(false)
   const { book: it, close, toast } = host
   const info = host.epub!.info
   const spine = info.spine
@@ -427,11 +433,15 @@ export default function EpubReader() {
     }
     const showNote = (text: string) => { if (text) setFoot({ text: text.slice(0, 2000), chapter: c, anchor }); else goChapter(c, { anchor }) }
     if (c === chapter) { showNote(pick(doc()!)); return }
-    fetch(host.epub!.chapterUrl(spine[c])).then((r) => r.text()).then((t) => {
+    fetch(host.epub!.chapterUrl(spine[c])).then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.text() }).then((t) => {
       let d = new DOMParser().parseFromString(t, 'application/xhtml+xml')
       if (d.querySelector('parsererror')) d = new DOMParser().parseFromString(t, 'text/html')
       showNote(pick(d))
-    }).catch(() => goChapter(c, { anchor }))
+    }).catch((e) => {
+      // Once per chapter, however often it is tried.
+      if (!reported.current.has(c)) { reported.current.add(c); host.report?.('warn', 'a chapter could not be loaded', { stack: errText(e), page: String(c + 1) }) }
+      goChapter(c, { anchor })
+    })
   }
 
   const onClickDoc = (e: MouseEvent) => {
@@ -614,7 +624,10 @@ export default function EpubReader() {
   const search = async (q: string) => {
     setQuery(q); setPanel('search'); setHits(null)
     if (q.trim().length < 2) { setHits([]); return }
-    try { setHits(await host.epub!.search(q.trim())) } catch { setHits([]) }
+    try { setHits(await host.epub!.search(q.trim())) } catch (e) {
+      setHits([])
+      if (!searchReported.current) { searchReported.current = true; host.report?.('warn', 'searching the book failed', { stack: errText(e) }) }
+    }
   }
 
   // Read aloud: paragraph by paragraph from the current page, turning pages
