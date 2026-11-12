@@ -69,6 +69,15 @@ To use it in another app, give it a `ReaderHost` whose `epub` field supplies the
 
 GNU Affero General Public License v3.0 (or later): see [LICENSE](LICENSE) and [NOTICE](NOTICE). If you redistribute it or build on it, please keep the NOTICE attribution.
 
+
+## In every app: its server-driven UI
+
+It carries its own `sdui.json`: its theme scope, and **Settings, Books** (each profile's own): layout, page colour, font, text size, line spacing, margins, justifying, brightness, warmth and the read-aloud speed. A book opens with them on every device, and changes made while reading are saved to them. Its library and book pages come with WittyInk, which every reader shares.
+
+**Stays in the reader's own code:** the reading surface, contents, search, notes and highlights and their export, and reading aloud.
+
+The file is checked with `wittymodule check` and described in WittyMediaServer's [docs/SDUI-MODULES.md](https://github.com/wittywilla/WittyMediaServer/blob/master/docs/SDUI-MODULES.md).
+
 ## Legal
 
 WittyEbook is an independent open-source project. It isn't associated with, sponsored by or endorsed
