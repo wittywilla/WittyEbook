@@ -3,8 +3,12 @@
 What changed in WittyEbook, newest first. What changed before it had a repository of its own is in the
 [WittyMediaServer changelog](https://github.com/wittywilla/WittyMediaServer/blob/master/CHANGELOG.md).
 
-## Unreleased
+## 0.4.1
 
+- The first release on module API 5. The tag v0.4.0 was made before these build changes and was never published.
+
+
+- Built on WittyModule 0.5.4 and module API 5: its workflows and SDUI kit are WittyModule 0.5.4's.
 - **WittyEbook 0.4.0: module API 5.** `integration.json` claims the `epub` format with the readers hook (`web.readers`), and the bundle exports `register(host)`, which hands the app the reader for it (`{ readers: { epub: … } }`). The app finds a reader by what the modules in use claim, loading WittyInk first; it no longer keeps a map of formats to readers of its own. The default export stays, for apps that embed the reader (WittyReader).
 - Built with WittyModule's one builder (`kit/web/build-bundle.mjs`, Vite 8); this repository's own copy of the builder is gone. `npm test` checks that `register` hands over exactly the formats `integration.json` claims.
 - **Settings in every app's Settings, under Modules** (`sdui.json`, each profile's own): layout, page colour, font, text size, line spacing, margins, justifying, brightness, warmth and the read-aloud speed. A book opens with them on every device, and changes made while reading are saved to them. The reading surface itself stays in the reader.
