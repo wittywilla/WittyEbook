@@ -1,0 +1,15 @@
+{
+  "format": "wittymodule-integration",
+  "formatVersion": 1,
+  "module": "wittyebook",
+  "host": {
+    "web": ">=5"
+  },
+  "web": {
+    "readers": [
+      {
+        "format": "epub"
+      }
+    ]
+  }
+}

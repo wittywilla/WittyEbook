@@ -55,13 +55,13 @@ npm install
 npm run build:bundle
 ```
 
-That makes one script and one stylesheet, as a server installs them. To check the manifest:
+That makes one script and one stylesheet, as a server installs them, with WittyModule's builder (`kit/web/build-bundle.mjs` in a WittyModule checkout beside this one, or wherever `WITTYMODULE` names). To check the manifest:
 
 ```bash
 go run github.com/wittywilla/wittymodule/cmd/wittymodule check .
 ```
 
-It has no tests of its own yet. CI checks the manifest and builds the bundle.
+`npm test` checks `sdui.json`, and that `register` hands over a reader for exactly the formats `integration.json` claims. CI checks the manifest and builds the bundle.
 
 To use it in another app, give it a `ReaderHost` whose `epub` field supplies the book: see [Embedding](wiki/Embedding.md). The other guides in [wiki/](wiki/Home.md) cover [reading and layout](wiki/Reading-and-layout.md), [text and display](wiki/Text-and-display.md), [study tools](wiki/Study-tools.md) and [every key](wiki/Keyboard-shortcuts.md).
 
@@ -69,6 +69,10 @@ To use it in another app, give it a `ReaderHost` whose `epub` field supplies the
 
 GNU Affero General Public License v3.0 (or later): see [LICENSE](LICENSE) and [NOTICE](NOTICE). If you redistribute it or build on it, please keep the NOTICE attribution.
 
+
+## How the app finds it
+
+Module API 5: `integration.json` claims the `epub` format with the readers hook (`web.readers`), and the bundle's `register(host)` hands over the reader for it. The web app opens a book with whichever module in use claims its format, after loading WittyInk, which every reader is built on. The app has no list of readers of its own.
 
 ## In every app: its server-driven UI
 
