@@ -85,15 +85,6 @@ GNU Affero General Public License v3.0 (or later): see [LICENSE](LICENSE) and [N
 
 WittyEbook is part of the WittyMediaServer project: [server repository](https://github.com/wittywilla/WittyMediaServer), [wittymediaserver.com](https://wittymediaserver.com).
 
-## Legal
-
-WittyEbook is an independent open-source project. It isn't associated with, sponsored by or endorsed
-by any publisher, rights holder, service or other media software project. No books come with it, and
-it doesn't check the ones you open: you're responsible for having the rights to them. Any
-third-party names here only describe what it works with, and belong to their owners. It's provided
-“as is”, with no warranty; see [LICENSE](LICENSE). Local law applies to how you use it. This isn't
-legal advice.
-
 <!-- module-kit -->
 ## Releasing
 
@@ -115,3 +106,12 @@ To take a version back, run the *withdraw* workflow from the *Actions* tab. It a
 
 Licensed under AGPL-3.0-or-later: see [LICENSE](LICENSE) and [NOTICE](NOTICE).
 <!-- /module-kit -->
+
+## Legal
+
+WittyEbook is an independent open-source project. It isn't associated with, sponsored by or endorsed
+by any publisher, rights holder, service or other media software project. No books come with it, and
+it doesn't check the ones you open: you're responsible for having the rights to them. Any
+third-party names here only describe what it works with, and belong to their owners. It's provided
+“as is”, with no warranty; see [LICENSE](LICENSE). Local law applies to how you use it. This isn't
+legal advice.
