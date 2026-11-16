@@ -19,5 +19,7 @@ place as the text reflows.
 Notes:
 
 - Brightness and warmth are layers over the page; the book itself never changes.
-- Your choices are remembered on this device and used for every book.
+- Your choices are used for every book. In WittyMediaServer they're your profile's own (also in
+  **Settings**, under **Modules**), so a book opens with them on every device. In WittyReader
+  they're remembered on the device.
 - Highlights and handwriting stay with their words whatever you change.
