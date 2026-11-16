@@ -28,5 +28,6 @@ The study tools and handwriting are shared with WittyPDF. Their full guides are 
 ## Not supported yet
 
 - Fixed-layout EPUBs (picture books laid out page by page) open, but reflow like other books.
-- Books with copy protection (DRM) can't be opened.
 - Ebook formats other than EPUB.
+
+Books with copy protection (DRM) are refused: WittyEbook opens only books that aren't locked.
