@@ -3,6 +3,14 @@
 What changed in WittyEbook, newest first. What changed before it had a repository of its own is in the
 [WittyMediaServer changelog](https://github.com/wittywilla/WittyMediaServer/blob/master/CHANGELOG.md).
 
+## 0.4.3
+
+- **Back on any TV remote closes the book** (or the open panel first). Some remotes' Back button did nothing in the reader. Back no longer also leaves the page before it, as it could with some remotes.
+
+## Developer notes for 0.4.3
+
+- Back keys (`preventDefault`, so the browser does not go back as well): `Escape`, `GoBack`, `BrowserBack`, `Back` and `XF86Back`, as WittyPlay and the server's player take them.
+
 ## 0.4.2
 
 - The README's pictures are retaken from WittyMediaServer 0.8.0-alpha.

@@ -420,7 +420,8 @@ export default function EpubReader() {
     if (mod && e.key.toLowerCase() === 'z') { e.preventDefault(); if (e.shiftKey) A.redo(); else A.undo(); return }
     if (mod && e.key.toLowerCase() === 'y') { e.preventDefault(); A.redo(); return }
     if (mod) return
-    if (e.key === 'Escape' || e.key === 'GoBack') {
+    if (['Escape', 'GoBack', 'BrowserBack', 'Back', 'XF86Back'].includes(e.key)) {
+      e.preventDefault() // the browser's own Back would leave a page more
       if (panel || sel || edit || define || foot) { setPanel(null); setSel(null); setEdit(null); setDefine(null); setFoot(null) } else if (inkMode) setInkMode(false); else close()
       return
     }
